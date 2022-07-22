@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:material_app/utils/constants.dart';
 
 class NodeTile extends StatelessWidget {
-  const NodeTile(
-      {Key? key,
-      required this.onExpand,
-      required this.title,
-      this.isExpanded = false,
-      this.childrens = const [],
-      this.isSelected = false})
-      : super(key: key);
+  const NodeTile({
+    Key? key,
+    required this.title,
+    this.onExpand,
+    this.isExpanded = false,
+    this.childrens = const [],
+    this.isSelected = false,
+    this.leading = Icons.child_care,
+  }) : super(key: key);
   final bool isExpanded;
-  final VoidCallback onExpand;
+  final VoidCallback? onExpand;
   final String title;
   final List<NodeTile> childrens;
   final bool isSelected;
+  final IconData leading;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -27,8 +29,7 @@ class NodeTile extends StatelessWidget {
                     icon: Icon(isExpanded
                         ? Icons.keyboard_arrow_down
                         : Icons.keyboard_arrow_right))
-                : const IconButton(
-                    onPressed: null, icon: Icon(Icons.child_care)),
+                : IconButton(onPressed: null, icon: Icon(leading)),
             TextButton(
                 style: TextButton.styleFrom(alignment: Alignment.centerLeft),
                 onPressed: () {},

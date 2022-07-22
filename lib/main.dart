@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:material_app/views/responsive.dart';
+import 'package:material_app/views/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,10 +10,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return const MaterialApp(
       title: 'Material App',
       debugShowCheckedModeBanner: false,
-      home: ResponsiveLayout(),
+      home: HomePage(),
     );
   }
 }
