@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:material_app/utils/constants.dart';
 import 'package:material_app/utils/utils.dart';
-import 'package:material_app/widgets/no_scaffold.dart';
+import 'package:material_app/widgets/node_tile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,76 +20,91 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: pages.isEmpty
-            ? const Text('Material App')
-            : Text(pages[currentPage]),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            ListTile(
-              leading: const Icon(Icons.app_shortcut),
-              title: const Text(
-                'New Scaffold',
-                style: textNormal,
-              ),
-              trailing: const Icon(Icons.add),
-              onTap: () {
-                final r = _random.nextInt(1000);
-                // TODO: Open text input to get scaffold name
-                setState(() {
-                  pages.add('Scaffold_$r');
-                });
-              },
-            ),
-            const Divider(
-              thickness: 2,
-            ),
-            ...[
-              for (var i = 0; i < pages.length; i++)
-                ListTile(
-                  leading: const Icon(Icons.smartphone),
-                  title: Text(
-                    pages[i],
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      currentPage = i;
-                    });
-                    Navigator.pop(context);
-                  },
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            showInput(context).then((value) {
-                              if (value != null) {
-                                if (value.isEmpty) return;
-                                setState(() {
-                                  pages[currentPage] = value;
-                                });
-                              }
-                            });
-                          },
-                          icon: const Icon(Icons.edit)),
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              pages.removeAt(i);
-                            });
-                          },
-                          icon: const Icon(Icons.delete)),
-                    ],
-                  ),
-                ),
-            ]
-          ],
+        appBar: AppBar(
+          title: pages.isEmpty
+              ? const Text('Material App')
+              : Text(pages[currentPage]),
         ),
-      ),
-      body: const NoScaffoldScreen(),
-    );
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.app_shortcut),
+                title: const Text(
+                  'New Scaffold',
+                  style: textNormal,
+                ),
+                trailing: const Icon(Icons.add),
+                onTap: () {
+                  final r = _random.nextInt(1000);
+                  // TODO: Open text input to get scaffold name
+                  setState(() {
+                    pages.add('Scaffold_$r');
+                  });
+                },
+              ),
+              const Divider(
+                thickness: 2,
+              ),
+              ...[
+                for (var i = 0; i < pages.length; i++)
+                  ListTile(
+                    leading: const Icon(Icons.smartphone),
+                    title: Text(
+                      pages[i],
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        currentPage = i;
+                      });
+                      Navigator.pop(context);
+                    },
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              showInput(context).then((value) {
+                                if (value != null) {
+                                  if (value.isEmpty) return;
+                                  setState(() {
+                                    pages[currentPage] = value;
+                                  });
+                                }
+                              });
+                            },
+                            icon: const Icon(Icons.edit)),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                pages.removeAt(i);
+                              });
+                            },
+                            icon: const Icon(Icons.delete)),
+                      ],
+                    ),
+                  ),
+              ]
+            ],
+          ),
+        ),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: NodeTile(
+                title: 'Scaffold',
+                onPropsClicked: () {
+                  debugPrint('clicked');
+                },
+                childrens: [
+                  NodeTile(
+                    title: 'body',
+                    onPropsClicked: () {},
+                  ),
+                ],
+              )),
+        ));
   }
 }
