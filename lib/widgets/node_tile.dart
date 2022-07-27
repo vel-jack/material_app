@@ -5,12 +5,12 @@ class NodeTile extends StatefulWidget {
   const NodeTile({
     Key? key,
     required this.title,
-    required this.onPropsClicked,
+    this.onPropsClicked,
     this.childrens = const [],
   }) : super(key: key);
   final String title;
   final List<NodeTile> childrens;
-  final VoidCallback onPropsClicked;
+  final VoidCallback? onPropsClicked;
 
   @override
   State<NodeTile> createState() => _NodeTileState();
