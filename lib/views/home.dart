@@ -5,6 +5,28 @@ import 'package:material_app/utils/constants.dart';
 import 'package:material_app/utils/node_widgets.dart';
 import 'package:material_app/utils/utils.dart';
 
+final data = {
+  'w_center': {
+    'children': [
+      {
+        'w_text': {
+          'text': 'Helo',
+        }
+      },
+      {
+        'w_text': {
+          'text': 'Hola',
+        }
+      },
+      {
+        'w_text': {
+          'text': 'Bye',
+        }
+      }
+    ]
+  }
+};
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -16,16 +38,20 @@ class _HomePageState extends State<HomePage> {
   List<String> pages = [];
   int currentPage = 0;
   final _random = Random();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: pages.isEmpty
-              ? const Text('Material App')
-              : Text(pages[currentPage]),
-        ),
-        drawer: buildDrawer(context),
-        body: jsonToWidget(json));
+      appBar: AppBar(
+        title: pages.isEmpty
+            ? const Text('Material App')
+            : Text(pages[currentPage]),
+      ),
+      drawer: buildDrawer(context),
+      body: Builder(builder: (context) {
+        return mapToNodeTile(data, '', context);
+      }),
+    );
   }
 
   Drawer buildDrawer(BuildContext context) {

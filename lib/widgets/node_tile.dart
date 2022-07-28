@@ -5,12 +5,14 @@ class NodeTile extends StatefulWidget {
   const NodeTile({
     Key? key,
     required this.title,
+    required this.path,
     this.onPropsClicked,
-    this.childrens = const [],
+    this.children = const [],
   }) : super(key: key);
   final String title;
-  final List<NodeTile> childrens;
-  final VoidCallback? onPropsClicked;
+  final List<NodeTile> children;
+  final String path;
+  final ValueChanged<String>? onPropsClicked;
 
   @override
   State<NodeTile> createState() => _NodeTileState();
@@ -55,12 +57,16 @@ class _NodeTileState extends State<NodeTile>
             Row(
               children: [
                 InkWell(
-                  onTap: _onTap,
+                  onTap: widget.children.isNotEmpty ? _onTap : null,
                   child: Row(
                     children: [
                       RotationTransition(
                         turns: _iconAnim,
-                        child: const Icon(Icons.expand_more),
+                        child: Icon(
+                          widget.children.isNotEmpty
+                              ? Icons.expand_more
+                              : Icons.accessibility,
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0).copyWith(right: 50),
@@ -73,7 +79,7 @@ class _NodeTileState extends State<NodeTile>
                   ),
                 ),
                 IconButton(
-                    onPressed: widget.onPropsClicked,
+                    onPressed: () => widget.onPropsClicked?.call(widget.path),
                     icon: const Icon(
                       Icons.settings,
                       color: Colors.grey,
@@ -97,7 +103,7 @@ class _NodeTileState extends State<NodeTile>
           child: Padding(
             padding: const EdgeInsets.only(left: 10),
             child: Column(
-              children: widget.childrens,
+              children: widget.children,
             ),
           ),
         ),
