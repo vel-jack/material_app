@@ -7,11 +7,13 @@ class NodeTile extends StatefulWidget {
     required this.title,
     required this.path,
     this.onPropsClicked,
+    this.icon,
     this.children = const [],
   }) : super(key: key);
   final String title;
   final List<NodeTile> children;
   final String path;
+  final IconData? icon;
   final ValueChanged<String>? onPropsClicked;
 
   @override
@@ -65,7 +67,7 @@ class _NodeTileState extends State<NodeTile>
                         child: Icon(
                           widget.children.isNotEmpty
                               ? Icons.expand_more
-                              : Icons.accessibility,
+                              : widget.icon ?? Icons.accessibility,
                         ),
                       ),
                       Padding(

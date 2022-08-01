@@ -1,26 +1,61 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/state_manager.dart';
 import 'package:material_app/utils/constants.dart';
 import 'package:material_app/utils/node_widgets.dart';
 import 'package:material_app/utils/utils.dart';
 
 final data = {
-  'w_center': {
+  'l_column': {
+    'name': 'Column',
     'children': [
       {
         'w_text': {
+          'name': 'Text',
           'text': 'Helo',
         }
       },
       {
         'w_text': {
+          'name': 'Text',
           'text': 'Hola',
         }
       },
       {
         'w_text': {
+          'name': 'Text',
           'text': 'Bye',
+        }
+      },
+      {
+        'l_center': {
+          'name': 'Center',
+          'child': {
+            'w_text': {
+              'name': 'Text',
+              'text': 'Hello there!',
+            }
+          }
+        }
+      },
+      {
+        'l_row': {
+          'name': 'Row',
+          'children': [
+            {
+              'w_text': {
+                'name': 'Text',
+                'text': 'Long Nested 1',
+              },
+            },
+            {
+              'w_text': {
+                'name': 'Text',
+                'text': 'Long Nested 2',
+              },
+            }
+          ]
         }
       }
     ]
@@ -48,6 +83,23 @@ class _HomePageState extends State<HomePage> {
             : Text(pages[currentPage]),
       ),
       drawer: buildDrawer(context),
+      endDrawer: Drawer(
+        child: Obx(() {
+          return propsController.props.isNotEmpty
+              ? ListView.builder(
+                  itemCount: propsController.props.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final node = propsController.props[index];
+                    return ListTile(
+                      title: Text(node['name']),
+                    );
+                  },
+                )
+              : Container(
+                  color: Colors.red,
+                );
+        }),
+      ),
       body: Builder(builder: (context) {
         return mapToNodeTile(data, '', context);
       }),

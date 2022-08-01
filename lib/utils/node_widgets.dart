@@ -1,6 +1,7 @@
 // ignore_for_file: sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:material_app/utils/constants.dart';
 import 'package:material_app/widgets/node_tile.dart';
 
 Widget mapToWidget(Map<String, dynamic> data) {
@@ -72,8 +73,11 @@ List<NodeTile> getChildrenNodeTile(
   String path,
   context,
 ) {
-  return List.generate(listMap.length,
-      (index) => mapToNodeTile(listMap[index], '$path.$index.', context));
+  return List.generate(listMap.length, (index) {
+    final nodePath =
+        listMap.length > 1 ? '$path.children.$index.' : '$path.child.';
+    return mapToNodeTile(listMap[index], nodePath, context);
+  });
   // return listMap.map((e) => mapToNodeTile(e, path, context)).toList();
   // return [];
 }
@@ -81,17 +85,21 @@ List<NodeTile> getChildrenNodeTile(
 NodeTile mapToNodeTile(Map<String, dynamic> map, String parentPath, context) {
   final node = map[map.keys.first];
   final haveChild = node.containsKey('child') || node.containsKey('children');
+
   return NodeTile(
-    title: map.keys.first,
+    title: node['name'],
     path: '$parentPath${map.keys.first}',
+    icon: map.keys.first == 'w_text' ? Icons.title : null,
     onPropsClicked: (path) {
-      // debugPrint(path);
+      propsController.propPath.value = path;
       // Scaffold.of(context).openDrawer();
     },
     children: haveChild
         ? node.containsKey('child')
-            ? getChildrenNodeTile([node['child']], map.keys.first, context)
-            : getChildrenNodeTile(node['children'], map.keys.first, context)
+            ? getChildrenNodeTile(
+                [node['child']], '$parentPath${map.keys.first}', context)
+            : getChildrenNodeTile(
+                node['children'], '$parentPath${map.keys.first}', context)
         : [],
   );
 }
