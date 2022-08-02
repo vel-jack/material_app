@@ -92,7 +92,7 @@ NodeTile mapToNodeTile(Map<String, dynamic> map, String parentPath, context) {
     icon: map.keys.first == 'w_text' ? Icons.title : null,
     onPropsClicked: (path) {
       propsController.propPath.value = path;
-      // Scaffold.of(context).openDrawer();
+      Scaffold.of(context).openEndDrawer();
     },
     children: haveChild
         ? node.containsKey('child')

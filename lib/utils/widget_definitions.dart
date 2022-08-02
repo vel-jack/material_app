@@ -58,9 +58,8 @@ const nodeWidgets = {
   },
   'w_text': {
     'text': 'Hola',
-    'style': null,
     'text_align': null,
-    'overflow': null
+    'overflow': null,
   },
   // 'w_image': {},
   // 'w_text_form_field':{},
@@ -71,17 +70,4 @@ const nodeButtons = {
   'b_outlined_button': {},
   'b_icon_button': {},
   // need to add material button and some buttons
-};
-
-const nodeStyles = {
-  'text_style': {
-    'color': 'black',
-    'font_size': null,
-    'font_weight': null,
-  },
-  // button style and others
-};
-
-final nodeDecorations = {
-  'decoration': {},
 };

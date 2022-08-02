@@ -81,23 +81,21 @@ class _HomePageState extends State<HomePage> {
         title: pages.isEmpty
             ? const Text('Material App')
             : Text(pages[currentPage]),
+        actions: const [
+          // IconButton(onPressed: () {}, icon: const Icon(Icons.play_arrow))
+        ],
       ),
       drawer: buildDrawer(context),
+      endDrawerEnableOpenDragGesture: false,
       endDrawer: Drawer(
         child: Obx(() {
-          return propsController.props.isNotEmpty
-              ? ListView.builder(
-                  itemCount: propsController.props.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final node = propsController.props[index];
-                    return ListTile(
-                      title: Text(node['name']),
-                    );
-                  },
-                )
-              : Container(
-                  color: Colors.red,
-                );
+          if (propsController.props.isNotEmpty) {
+            return EndDrawer(props: propsController.props);
+          } else {
+            return Container(
+              color: Colors.red,
+            );
+          }
         }),
       ),
       body: Builder(builder: (context) {
@@ -169,6 +167,78 @@ class _HomePageState extends State<HomePage> {
           ]
         ],
       ),
+    );
+  }
+}
+
+class EndDrawer extends StatelessWidget {
+  const EndDrawer({Key? key, required this.props}) : super(key: key);
+  final Map<String, dynamic> props;
+
+  @override
+  Widget build(BuildContext context) {
+    title(title) => Text(
+          title,
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          height: 30,
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          InkWell(
+            onTap: () {
+              Scaffold.of(context).closeEndDrawer();
+            },
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.arrow_back),
+            ),
+          ),
+          InkWell(
+            onTap: () {},
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.done),
+            ),
+          )
+        ]),
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: props.keys.map((key) {
+                if (key == 'name') {
+                  return title(props['name']);
+                }
+                if (key == 'text') {
+                  return InkWell(
+                    onTap: () {},
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text(
+                          'Text',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '${props['text']}',
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
+                  );
+                }
+                return Text('${props[key]}');
+              }).toList(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
