@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
+import 'package:material_app/ext/color_picker.dart';
+import 'package:material_app/ext/text_editor.dart';
 import 'package:material_app/utils/constants.dart';
 import 'package:material_app/utils/node_widgets.dart';
 import 'package:material_app/utils/utils.dart';
@@ -14,6 +16,7 @@ final data = {
         'w_text': {
           'name': 'Text',
           'text': 'Helo',
+          'color': 'red',
         }
       },
       {
@@ -188,24 +191,15 @@ class EndDrawer extends StatelessWidget {
         const SizedBox(
           height: 30,
         ),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          InkWell(
-            onTap: () {
-              Scaffold.of(context).closeEndDrawer();
-            },
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(Icons.arrow_back),
-            ),
+        InkWell(
+          onTap: () {
+            Scaffold.of(context).closeEndDrawer();
+          },
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(Icons.arrow_back),
           ),
-          InkWell(
-            onTap: () {},
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(Icons.done),
-            ),
-          )
-        ]),
+        ),
         SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -216,7 +210,18 @@ class EndDrawer extends StatelessWidget {
                 }
                 if (key == 'text') {
                   return InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (builder) => TextEditor(
+                                    text: '${props['text']}',
+                                  ))).then((value) {
+                        if (value != null) {
+                          debugPrint(value);
+                        }
+                      });
+                    },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -227,6 +232,35 @@ class EndDrawer extends StatelessWidget {
                         ),
                         Text(
                           '${props['text']}',
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
+                  );
+                }
+                if (key == 'color') {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (builder) => ColorPicker()))
+                          .then((value) {
+                        if (value != null) {
+                          debugPrint(value);
+                        }
+                      });
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text(
+                          'Color',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '${props['color']}',
                           style: const TextStyle(fontSize: 20),
                         )
                       ],
